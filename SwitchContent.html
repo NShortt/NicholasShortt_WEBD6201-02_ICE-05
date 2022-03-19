@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>WEBD6201-02 ICE-05</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        var request;
+
+        // Sets up the event listeners for the images
+        function listenersSetup() {
+            // Add event listerners to display image linked contents on mouse over and clear on mouse leave
+            $("#eldenRing").mouseover(function() { getContent("./InfoFiles/eldenRing.html"); }).
+                            mouseleave(function() { clearContent(); });
+            $("#massEffect").mouseenter(function() { getContent("./InfoFiles/massEffect.html"); }).
+                            mouseleave(function() { clearContent(); });
+            $("#dragonAge").mouseenter(function() { getContent("./InfoFiles/dragonAge.html"); }).
+                            mouseleave(function() { clearContent(); });
+            $("#yakuza").mouseenter(function() { getContent("./InfoFiles/yakuza.html"); }).
+                            mouseleave(function() { clearContent(); });
+            $("#batman").mouseenter(function() { getContent("./InfoFiles/batman.html"); }).
+                            mouseleave(function() { clearContent(); });
+            $("#watchDogs").mouseenter(function() { getContent("./InfoFiles/watchDogs.html"); }).
+                            mouseleave(function() { clearContent(); });
+        }
+
+        // Insert html from given page to content area
+        function getContent(url) {
+            // Try to make xml http request
+            try {
+                // Set up new request
+                request = new XMLHttpRequest();
+
+                // Add listener to check state when state is ready
+                request.addEventListener("readystatechange", stateChange, false);
+                // Define open and send
+                request.open("GET", url, true);
+                request.send(null);
+            }
+            catch (ex) {
+                alert("XML Http Request Failed.");
+            }
+        }
+
+        // Clear content area
+        function clearContent() {
+            $("#contentArea").html("");
+        }
+
+        // Perform action based on state change of xml http request
+        function stateChange() {
+            // When ready state is done and status is ok fill the content area
+            if (request.readyState == 4 && request.status == 200) {
+                $("#contentArea").html(request.responseText);
+            }
+        }
+
+        // On window load
+        window.addEventListener("load", listenersSetup);
+    </script>
+</head>
+
+<body>
+    <h1>Mouse over to see game info.</h1>
+
+    <img src="./Images/eldenRing.jpg" alt="Elden Ring" id="eldenRing" width="460" height="215">
+    <img src="./Images/massEffect.jpg" alt="Mass Effect" id="massEffect" width="460" height="215">
+    <img src="./Images/dragonAge.jpg" alt="Dragon Age" id="dragonAge" width="200" height="215">
+    <img src="./Images/yakuza.jpg" alt="Yakuza 0" id="yakuza" width="460" height="215">
+    <img src="./Images/batman.jpg" alt="Batman Arkam Series" id="batman" width="460" height="215">
+    <img src="./Images/watchDogs.jpg" alt="Watch Dogs" id="watchDogs" width="200" height="215">
+
+    <div class="box" id="contentArea"></div>
+</body>
+
+</html>
